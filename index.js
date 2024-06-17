@@ -11,13 +11,12 @@ function onYouTubeIframeAPIReady() {
 		width: '640',
 		videoId: 'G1IbRujko-A',
 		playerVars: {
-			'playsinline': 1
+			'playsinline': 1,
+			'mute': 1
 		},
 		events: {}
 	});
 }
-
-const delay = ms => new Promise(res => setTimeout(res, ms));
 
 let timeToStart = 0;
 
@@ -32,10 +31,12 @@ onload = (event) => {
 			let minutes = timeToStart.split(':')[1] - date.getMinutes();
 			let totalSeconds = ((hours * 360) + (minutes * 60)) - date.getSeconds();
 			console.log(`Will play in ${totalSeconds} seconds`)
-			if (delay > 0) {
-				delay(totalSeconds * 1000);
+			if (totalSeconds > 0) {
+				setTimeout(() => { player.playVideo() }, totalSeconds * 1000);
 			}
-			player.playVideo();
+			else {
+				player.playVideo();
+			}
 		}
 	});
 
