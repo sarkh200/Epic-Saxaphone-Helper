@@ -4,39 +4,42 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-// 3. This function creates an <iframe> (and YouTube player)
-//    after the API code downloads.
 var player;
 function onYouTubeIframeAPIReady() {
 	player = new YT.Player('player', {
 		height: '390',
 		width: '640',
-		videoId: 'Sagg08DrO5U',
+		videoId: 'M7lc1UVf-VE',
 		playerVars: {
 			'playsinline': 1
 		},
-		events: {
-			'onReady': onPlayerReady,
-			'onStateChange': onPlayerStateChange
-		}
+		events: {}
 	});
 }
 
-// 4. The API will call this function when the video player is ready.
-function onPlayerReady(event) {
-	event.target.pauseVideo();
-}
+const delay = ms => new Promise(res => setTimeout(res, ms));
 
-// 5. The API calls this function when the player's state changes.
-//    The function indicates that when playing a video (state=1),
-//    the player should play for six seconds and then stop.
-var done = false;
-function onPlayerStateChange(event) {
-	if (event.data == YT.PlayerState.PLAYING && !done) {
-		setTimeout(stopVideo, 6000);
-		done = true;
-	}
-}
-function stopVideo() {
-	player.stopVideo();
+let timeToStart = 0;
+
+onload = (event) => {
+	const startTimeSelector = document.getElementById("StartTimeSelector");
+	const goButton = document.getElementById("Go");
+
+	goButton.addEventListener("click", (event) => {
+		if (timeToStart != 0) {
+			let date = new Date();
+			let hours = timeToStart.split(':')[0] - date.getHours();
+			let minutes = timeToStart.split(':')[1] - date.getMinutes();
+			let totalSeconds = ((hours * 360) + (minutes * 60)) - date.getSeconds();
+			console.log(`Will play in ${totalSeconds} seconds`)
+			if (delay > 0) {
+				delay(totalSeconds * 1000);
+			}
+			player.playVideo();
+		}
+	});
+
+	startTimeSelector.addEventListener("change", (event) => {
+		timeToStart = event.target.value;
+	});
 }
