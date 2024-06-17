@@ -12,7 +12,6 @@ function onYouTubeIframeAPIReady() {
 		videoId: 'G1IbRujko-A',
 		playerVars: {
 			'playsinline': 1,
-			'mute': 1
 		},
 		events: {}
 	});
@@ -35,6 +34,7 @@ onload = (event) => {
 				setTimeout(() => { player.playVideo() }, totalSeconds * 1000);
 			}
 			else {
+				player.seekTo(0);
 				player.playVideo();
 			}
 		}
