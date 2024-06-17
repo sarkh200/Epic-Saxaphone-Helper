@@ -23,7 +23,7 @@ async function getJSON(url) {
 }
 
 async function getTime() {
-	let data = await getJSON("http://worldtimeapi.org/api/ip");
+	let data = await getJSON("https://worldtimeapi.org/api/ip");
 	let time = data.datetime;
 	let date = new Date(time);
 	let hours = timeToStart.split(':')[0] - date.getHours();
