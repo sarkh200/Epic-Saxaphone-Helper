@@ -28,17 +28,17 @@ async function getTime() {
 	let date = new Date(time);
 	let hours = timeToStart.split(':')[0] - date.getHours();
 	let minutes = timeToStart.split(':')[1] - date.getMinutes();
-	let totalSeconds = ((hours * 360) + (minutes * 60)) - date.getSeconds();
-	return totalSeconds;
+	let totalMS = ((hours * 360000) + (minutes * 60000)) - (date.getSeconds() * 1000) - date.getMilliseconds();
+	return totalMS;
 }
 
 async function go() {
 	if (timeToStart != 0) {
-		let totalSeconds = await getTime();
+		let totalMS = await getTime();
 		let time = new Date();
-		output.innerHTML = `Will play in ${totalSeconds} seconds as of ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
-		if (totalSeconds > 0) {
-			setTimeout(() => { player.playVideo() }, totalSeconds * 1000);
+		output.innerHTML = `Will play in ${totalMS} milliseconds as of ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}.${time.getMilliseconds()}`;
+		if (totalMS > 0) {
+			setTimeout(() => { player.playVideo() }, totalMS);
 		}
 		else {
 			player.seekTo(0);
